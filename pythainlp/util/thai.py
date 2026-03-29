@@ -369,8 +369,6 @@ def count_thai_chars(text: str) -> dict[str, int]:
         "non_thai": 0,
     }
     for c in text:
-        if c in thai_vowels:
-            _dict["vowels"] += 1
         if c in thai_lead_vowels:
             _dict["lead_vowels"] += 1
         elif c in thai_follow_vowels:
@@ -391,6 +389,12 @@ def count_thai_chars(text: str) -> dict[str, int]:
             _dict["punctuations"] += 1
         else:
             _dict["non_thai"] += 1
+    _dict["vowels"] = (
+        _dict["lead_vowels"]
+        + _dict["follow_vowels"]
+        + _dict["above_vowels"]
+        + _dict["below_vowels"]
+    )
     return _dict
 
 
