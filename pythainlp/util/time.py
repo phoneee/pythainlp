@@ -304,7 +304,12 @@ def thaiword_to_time(text: str, padding: bool = True) -> str:
         if len(hour) == 1:
             text += "19"
         else:
-            text += str(_DICT_THAI_TIME[hour[0]] + 18)
+            h = _DICT_THAI_TIME[hour[0]] + 18
+            if h > 23:
+                raise ValueError(
+                    f"Hour value {h} exceeds 23. Valid ทุ่ม range is 1-5."
+                )
+            text += str(h)
 
     if not text:
         raise ValueError("Cannot find any Thai word for hour.")
@@ -324,6 +329,10 @@ def thaiword_to_time(text: str, padding: bool = True) -> str:
                     n *= 10
                 elif affix == "สิบ" and n == 0:
                     n += 10
+        if n > 59:
+            raise ValueError(
+                f"Minute value {n} exceeds 59."
+            )
         if n != 0 and n > 9:
             text += str(n)
         else:
